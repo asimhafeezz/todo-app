@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux"
 import axios from 'axios'
-import { Dispatch } from 'redux'
 import { ActionsTypes as types } from './types'
 
 const url: string = "https://jsonplaceholder.typicode.com/todos"  
@@ -16,8 +15,14 @@ export interface FetchTodosActionI {
     payload: TodoI[]
 }
 
+export interface DeleteTodoActionI {
+    type: types.deleteTodos,
+    payload: number
+}
+
 export interface UseActionI {
-    fetchTodos: () => Promise<void>
+    fetchTodos: () => Promise<void>,
+    deleteTodo: (id: number) => void
 }
 
 
@@ -36,7 +41,15 @@ export const useAction = (): UseActionI => {
     })
     }
 
+    const deleteTodo = (id: number): void => {
+        dispatch<DeleteTodoActionI>({
+            type: types.deleteTodos,
+            payload: id
+        })
+    }
+
     return {
-        fetchTodos
+        fetchTodos,
+        deleteTodo
     }
 }
